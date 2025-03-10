@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService} from '../user.service';
+import { QrGenerationComponent } from '../qr-generation/qr-generation.component';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -17,6 +18,9 @@ interface User {
 })
 export class UserDashboardComponent implements OnInit {
   userDetails: User | null = null;
+  showQRCode = false; // Initially hidden
+  qrData = ''; // Data for the QR Code
+
   recentScans = [
     { type: 'Breakfast', date: '2025-03-09' },
     { type: 'Lunch', date: '2025-03-08' },
@@ -40,10 +44,21 @@ export class UserDashboardComponent implements OnInit {
     });
   }
   
+  toggleQRCode() {
+    if (this.userDetails) {
+      const now = new Date(); // Get current local time
   
-
-  generateQRCode(): void {
-    console.log('Generating QR Code...');
-    // Logic for QR code generation can be implemented here
+      this.qrData = JSON.stringify({
+        username: this.userDetails.username,
+        matricNumber: this.userDetails.matricNumber,
+        mealId: this.userDetails.mealId || 'Not assigned',
+        timestamp: now.toISOString() // Add timestamp in ISO format
+      });
+  
+      this.showQRCode = !this.showQRCode; // Toggle QR display
+    } else {
+      console.error("No user details available!");
+    }
   }
+  
 }

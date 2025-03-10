@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { QrCodeComponent } from 'ng-qrcode';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { QrGenerationComponent } from './user/qr-generation/qr-generation.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,7 +26,8 @@ import { UserDashboardComponent } from './user/user-dashboard/user-dashboard.com
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    QrGenerationComponent,
   ],
   imports: [
     FormsModule,

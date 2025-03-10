@@ -2,21 +2,21 @@
   <!-- Main User Details Card -->
   <mat-card class="main-card">
     <div class="user-header">
-      <img src="assets/user-placeholder.png" alt="User Image" class="user-image" />
+      <img src="../../../assets/user-placeholder.png" alt="User Image" class="user-image" />
       <div class="user-info">
-        <h3>{{ userDetails?.username }}</h3> <!-- Fix: Change "name" to "username" -->
-        <p>Matric: {{ userDetails?.matricNumber }}</p>
+        <h3 class="nameclass">{{ userDetails?.username }}</h3>
+        <p class="matricclass">Matric: {{ userDetails?.matricNumber }}</p>
       </div>
     </div>
 
     <div class="plan-details">
       <div class="plan">
-        <p><strong>Meal Plan</strong></p>
-        <p>{{ userDetails?.mealId || 'Not assigned' }}</p>
+        <p class="mealplanlabel">Meal Plan</p>
+        <p class="mealplandata"><strong></strong></p>
       </div>
       <div class="date">
-        <p><strong>Date</strong></p>
-        <p></p> <!-- Display formatted date -->
+        <p class="carddate">Date</p>
+        <p class="datedata"><strong></strong></p>
       </div>
     </div>
   </mat-card>
@@ -34,9 +34,13 @@
   </div>
 
   <!-- Generate QR Code Button -->
-  <button mat-raised-button color="primary" class="qr-button" (click)="generateQRCode()">
-    <mat-icon>qr_code</mat-icon> Generate QR Code
-  </button>
+<button mat-raised-button color="primary" class="qr-button" (click)="toggleQRCode()">
+  <mat-icon>qr_code</mat-icon> Generate QR Code
+</button>
+
+<!-- QR Code Generator Component (Hidden until button is clicked) -->
+<app-qr-generation *ngIf="showQRCode" [userData]="qrData"></app-qr-generation>
+
 
   <!-- QR History -->
   <h3>QR History</h3>
@@ -56,3 +60,9 @@
     <p>No scan history available</p>
   </ng-template>
 </div>
+
+
+  <!-- Generate QR Code Button -->
+  <!-- <button mat-raised-button color="primary" class="qr-button" (click)="generateQRCode()">
+    <mat-icon>qr_code</mat-icon> Generate QR Code
+  </button> -->
