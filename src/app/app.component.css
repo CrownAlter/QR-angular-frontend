@@ -1,0 +1,14 @@
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align:left;
+  }
+  
+  mat-card {
+    padding: 20px;
+  }
+  nav button {
+    margin: 10px;
+  }
+  

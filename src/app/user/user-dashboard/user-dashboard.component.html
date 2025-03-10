@@ -1,0 +1,58 @@
+<div class="dashboard-container">
+  <!-- Main User Details Card -->
+  <mat-card class="main-card">
+    <div class="user-header">
+      <img src="assets/user-placeholder.png" alt="User Image" class="user-image" />
+      <div class="user-info">
+        <h3>{{ userDetails?.username }}</h3> <!-- Fix: Change "name" to "username" -->
+        <p>Matric: {{ userDetails?.matricNumber }}</p>
+      </div>
+    </div>
+
+    <div class="plan-details">
+      <div class="plan">
+        <p><strong>Meal Plan</strong></p>
+        <p>{{ userDetails?.mealId || 'Not assigned' }}</p>
+      </div>
+      <div class="date">
+        <p><strong>Date</strong></p>
+        <p></p> <!-- Display formatted date -->
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- Two Smaller Cards Below -->
+  <div class="summary-cards">
+    <mat-card class="small-card">
+      <p><strong>Meals Left</strong></p>
+      <p class="number">--</p> <!-- Placeholder, backend should provide real data -->
+    </mat-card>
+    <mat-card class="small-card">
+      <p><strong>Days Left</strong></p>
+      <p class="number">--</p>
+    </mat-card>
+  </div>
+
+  <!-- Generate QR Code Button -->
+  <button mat-raised-button color="primary" class="qr-button" (click)="generateQRCode()">
+    <mat-icon>qr_code</mat-icon> Generate QR Code
+  </button>
+
+  <!-- QR History -->
+  <h3>QR History</h3>
+  <mat-list *ngIf="recentScans.length > 0; else noHistory">
+    <mat-list-item *ngFor="let scan of recentScans">
+      <div class="qr-history">
+        <div class="scan-info">
+          <p class="meal-type">{{ scan.type }}</p>
+          <p class="scan-date">{{ scan.date }}</p>
+        </div>
+        <mat-icon>chevron_right</mat-icon>
+      </div>
+    </mat-list-item>
+  </mat-list>
+
+  <ng-template #noHistory>
+    <p>No scan history available</p>
+  </ng-template>
+</div>
