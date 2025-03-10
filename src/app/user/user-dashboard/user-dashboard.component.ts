@@ -5,6 +5,7 @@ import { QrGenerationComponent } from '../qr-generation/qr-generation.component'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface User {
+  id: string;
   username: string;
   matricNumber: string;
   mealId?: number;
@@ -49,6 +50,7 @@ export class UserDashboardComponent implements OnInit {
       const now = new Date(); // Get current local time
   
       this.qrData = JSON.stringify({
+        id: this.userDetails.id,
         username: this.userDetails.username,
         matricNumber: this.userDetails.matricNumber,
         mealId: this.userDetails.mealId || 'Not assigned',
