@@ -19,6 +19,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserDashboardComponent } from './user/user-dashboard/user-dashboard.component';
+import { QrScannerComponent } from './admin/qr-scanner/qr-scanner.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 
 
 @NgModule({
@@ -28,6 +30,8 @@ import { UserDashboardComponent } from './user/user-dashboard/user-dashboard.com
     RegisterComponent,
     UserDashboardComponent,
     QrGenerationComponent,
+    QrScannerComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     FormsModule,
