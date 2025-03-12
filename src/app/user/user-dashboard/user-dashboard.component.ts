@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { UserService} from '../user.service';
 import { QrGenerationComponent } from '../qr-generation/qr-generation.component';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface User {
-  id: string;
+  id: number;
   username: string;
   matricNumber: string;
   mealId?: number;
+  mealType: string;
 }
 
 @Component({
@@ -19,15 +20,16 @@ interface User {
 })
 export class UserDashboardComponent implements OnInit {
   userDetails: User | null = null;
+  mealHistory: any[] = [];
+  mealsLeft: number = 0; // Stores meals left
+  mealsUsed: number = 0; // Stores meals used
   showQRCode = false; // Initially hidden
   qrData = ''; // Data for the QR Code
+  qrHistory: any;
+  mealPlan: string = 'Not assigned'; // ✅ Stores meal plan text
+  
 
-  recentScans = [
-    { type: 'Breakfast', date: '2025-03-09' },
-    { type: 'Lunch', date: '2025-03-08' },
-  ]; // Example data
-
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadUserDetails();
@@ -37,12 +39,35 @@ export class UserDashboardComponent implements OnInit {
     this.userService.loadUserDetails().subscribe({
       next: (response) => {
         console.log("User Details:", response);
-        this.userDetails = response; // ✅ Assign response to userDetails
+        this.userDetails = response;
+
+        // ✅ Determine meal plan based on mealId
+        this.mealPlan = this.getMealPlan(this.userDetails?.mealId);
+
+        if (this.userDetails?.id) {
+          this.loadMealHistory(this.userDetails.id);
+          this.loadMealStatus();
+        }
       },
       error: (err) => {
         console.error("Error fetching user details:", err);
       }
     });
+  }
+
+  getMealPlan(mealId?: number): string {
+    switch (mealId) {
+      case 1:
+        return 'Breakfast & Lunch';
+      case 2:
+        return 'Breakfast & Supper';
+      case 3:
+        return 'Lunch & Supper';
+      case 4:
+        return 'Breakfast, Lunch & Supper';
+      default:
+        return 'Not assigned';
+    }
   }
   
   toggleQRCode() {
@@ -62,5 +87,48 @@ export class UserDashboardComponent implements OnInit {
       console.error("No user details available!");
     }
   }
-  
+
+  loadMealHistory(userId: number) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No authentication token found!");
+      return;
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const apiUrl = `http://localhost:8000/api/v1/meal/history/${userId}`;
+
+    this.http.get(apiUrl, { headers }).subscribe({
+      next: (history: any) => {
+        console.log("Meal History:", history);
+        this.mealHistory = history;
+      },
+      error: (err) => {
+        console.error("Error fetching meal history:", err);
+      }
+    });
+  }
+
+  // ✅ Fetch Meals Left & Meals Used
+  loadMealStatus() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No authentication token found!");
+      return;
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const apiUrl = `http://localhost:8000/api/v1/user-meal/user-meal-status`;
+
+    this.http.get(apiUrl, { headers }).subscribe({
+      next: (mealStatus: any) => {
+        console.log("Meal Status:", mealStatus);
+        this.mealsLeft = mealStatus.mealsLeft;
+        this.mealsUsed = mealStatus.mealsUsed;
+      },
+      error: (err) => {
+        console.error("Error fetching meal status:", err);
+      }
+    });
+  }
 }

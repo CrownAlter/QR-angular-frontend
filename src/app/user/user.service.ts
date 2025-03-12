@@ -8,10 +8,11 @@ import { HttpHeaders } from '@angular/common/http';
 export interface User {
   id: number;
   email: string;
-  name: string;
+  username: string;
   role: string;
   matricNumber: string;
   mealId?: number; 
+  roleId?: number;
 }
 
 @Injectable({

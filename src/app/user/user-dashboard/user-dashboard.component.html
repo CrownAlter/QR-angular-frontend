@@ -1,68 +1,69 @@
-<div class="dashboard-container">
-  <!-- Main User Details Card -->
-  <mat-card class="main-card">
-    <div class="user-header">
-      <img src="../../../assets/user-placeholder.png" alt="User Image" class="user-image" />
-      <div class="user-info">
-        <h3 class="nameclass">{{ userDetails?.username }}</h3>
-        <p class="matricclass">Matric: {{ userDetails?.matricNumber }}</p>
-      </div>
-    </div>
-
-    <div class="plan-details">
-      <div class="plan">
-        <p class="mealplanlabel">Meal Plan</p>
-        <p class="mealplandata"><strong></strong></p>
-      </div>
-      <div class="date">
-        <p class="carddate">Date</p>
-        <p class="datedata"><strong></strong></p>
-      </div>
-    </div>
-  </mat-card>
-
-  <!-- Two Smaller Cards Below -->
-  <div class="summary-cards">
-    <mat-card class="small-card">
-      <p><strong>Meals Left</strong></p>
-      <p class="number">--</p> <!-- Placeholder, backend should provide real data -->
-    </mat-card>
-    <mat-card class="small-card">
-      <p><strong>Days Left</strong></p>
-      <p class="number">--</p>
-    </mat-card>
-  </div>
-
-  <!-- Generate QR Code Button -->
-<button mat-raised-button color="primary" class="qr-button" (click)="toggleQRCode()">
-  <mat-icon>qr_code</mat-icon> Generate QR Code
-</button>
-
-<!-- QR Code Generator Component (Hidden until button is clicked) -->
-<app-qr-generation *ngIf="showQRCode" [userData]="qrData"></app-qr-generation>
-
-
-  <!-- QR History -->
-  <h3>QR History</h3>
-  <mat-list *ngIf="recentScans.length > 0; else noHistory">
-    <mat-list-item *ngFor="let scan of recentScans">
-      <div class="qr-history">
-        <div class="scan-info">
-          <p class="meal-type">{{ scan.type }}</p>
-          <p class="scan-date">{{ scan.date }}</p>
-        </div>
-        <mat-icon>chevron_right</mat-icon>
-      </div>
-    </mat-list-item>
-  </mat-list>
-
-  <ng-template #noHistory>
-    <p>No scan history available</p>
-  </ng-template>
+<!-- Sidebar
+<div id="sidebar" class="sidebar">
+  <ul>
+    <li><a href="#">Dashboard</a></li>
+    <li><a href="#">Meal Plans</a></li>
+    <li><a href="#">QR History</a></li>
+    <li><a href="#">Settings</a></li>
+  </ul>
 </div>
 
 
-  <!-- Generate QR Code Button -->
-  <!-- <button mat-raised-button color="primary" class="qr-button" (click)="generateQRCode()">
-    <mat-icon>qr_code</mat-icon> Generate QR Code
-  </button> -->
+<div id="overlay" class="overlay" (click)="closeSidebar()"></div>
+<button id="toggleSidebar" class="menu-btn" (click)="toggleSidebar()">☰</button> -->
+
+
+<div class="main-content">
+  <div class="container">
+    <!-- Welcome Card -->
+    <mat-card class="welcome-card">
+      <h2 class="welcome-text">Welcome Back, {{ userDetails?.username }}!</h2>
+      <p class="details">Matric Number:  {{ userDetails?.matricNumber }}</p>
+      <p class="details">Meal Plan:  {{ mealPlan}}</p>
+      <!-- <p class="details">Valid Until:</p> -->
+    </mat-card>
+  
+    <!-- Grid Layout -->
+    <div class="stats-grid">
+      <mat-card class="stat-card">
+        <h3>Meals Left</h3>
+        <p class="number">{{ mealsLeft }}</p>
+      </mat-card>
+      <mat-card class="stat-card">
+        <h3>Meals Used</h3>
+        <p class="trend">{{ mealsUsed }}</p>
+      </mat-card>
+    </div>
+  
+  
+  
+    <div class="qr-button-container">
+      <button mat-flat-button class="qr-button" (click)="toggleQRCode()">
+        <mat-icon class="qr-icon">qr_code</mat-icon> Generate QR Code
+      </button>
+    </div>
+    
+  
+    
+  <!-- QR Code Generator Component (Hidden until button is clicked) -->
+  <app-qr-generation *ngIf="showQRCode" [userData]="qrData"></app-qr-generation>
+  
+<!-- QR Code History -->
+<mat-card class="history-card">
+  <h3 class="meal-history-title">Meal History</h3>
+  <div class="history-list">
+    <mat-list class="meal-history-list">
+      <mat-list-item *ngFor="let meal of mealHistory">
+        <div class="list-content">
+          <p class="qr-title">{{ meal.mealType | titlecase }}</p>
+          <p class="qr-date">Consumed on {{ meal.dateConsumed | date:'medium' }}</p>
+        </div>
+        <mat-icon class="download-icon">history</mat-icon>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</mat-card>
+
+  
+  
+</div>

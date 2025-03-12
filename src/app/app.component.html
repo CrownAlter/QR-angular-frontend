@@ -1,9 +1,31 @@
-<mat-toolbar color="primary">
-  <span>BABCOCK UNIVERSITY</span>
-</mat-toolbar>
-
-<div class="container">
-  
-  <router-outlet></router-outlet>
- 
+<!-- Sidebar (Stays Fixed) -->
+<div *ngIf="!isPublicPage()" id="sidebar" class="sidebar">
+  <ul>
+    <li><a href="#">Dashboard</a></li>
+    <li><a href="#">Meal Plans</a></li>
+    <li><a href="#">QR History</a></li>
+    <li><a href="#">Settings</a></li>
+  </ul>
 </div>
+
+<!-- Menu Button (Fixed Position) -->
+
+<!-- Overlay -->
+<div *ngIf="!isPublicPage()" id="overlay" class="overlay" (click)="closeSidebar()"></div>
+
+<!-- 🟢 Wrapper to Shift Header + Dashboard -->
+<div class="main-wrapper" [class.shifted]="sidebarOpen">
+  <div *ngIf="!isPublicPage()" >
+    <!-- 🔵 HEADER (Moves with Dashboard) -->
+    <header class="header">
+      <button id="toggleSidebar" class="menu-btn" (click)="toggleSidebar()">☰</button>
+      <p>My Dashboard</p>
+    </header>
+  </div>
+
+  <!-- 🔴 MAIN DASHBOARD (Moves with Sidebar) -->
+  <router-outlet></router-outlet>
+</div>
+
+
+
