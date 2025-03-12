@@ -1,24 +1,76 @@
-/* Sidebar */
+/* 🌟 Sidebar Styles */
 .sidebar {
-    width: 200px;
+    width: 220px; /* Slightly wider for better spacing */
     height: 100vh;
     position: fixed;
-    left: -200px; /* Initially collapsed */
+    left: -250px; /* Initially collapsed */
     top: 0;
-    background-color: #1976d2;
+    background: rgba(37, 99, 235, 1); /* Material Design Blue */
     color: white;
     transition: left 0.3s ease-in-out;
     padding-top: 60px;
     z-index: 1000;
-  }
-  
-  /* Sidebar Open */
-  .sidebar.open {
+    box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 🟢 Sidebar Open State */
+.sidebar.open {
     left: 0;
-  }
-  
-  /* Overlay */
-  .overlay {
+}
+
+/* 🔵 Sidebar Items */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 🔹 Sidebar Links */
+.sidebar ul li {
+    padding: 15px 20px;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    transition: background 0.3s ease-in-out;
+}
+
+/* 🔹 Sidebar Links - Hover Effect */
+.sidebar ul li:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* 🔹 Sidebar Links - Active Page */
+.sidebar ul li.active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 🔹 Sidebar Links - Style */
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    flex-grow: 1; /* Makes text expand properly */
+}
+
+/* 🟠 Sidebar Icons */
+.sidebar ul li i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* 🛑 Close Sidebar Button (Optional) */
+.sidebar .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+}
+
+/* 🌟 Sidebar Overlay */
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -27,11 +79,26 @@
     background: rgba(0, 0, 0, 0.5);
     z-index: 900;
     display: none;
-  }
-  
-  .overlay.active {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* 🔵 Active Overlay */
+.overlay.active {
     display: block;
-  }
+    opacity: 1;
+}
+
+/* 🟢 Mobile Sidebar */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px; /* Reduce width on smaller screens */
+    }
+
+    .sidebar ul li {
+        font-size: 14px;
+    }
+}
+
   
   /* 🟢 MAIN WRAPPER (Contains Header + Dashboard) */
   .main-wrapper {
@@ -80,5 +147,9 @@
     .main-wrapper.shifted {
       margin-left: 0;
     }
+  }
+
+  .header-text{
+    align-items: center;
   }
   
