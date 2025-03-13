@@ -14,8 +14,13 @@
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
   }
-  
+
   .stat-card {
+    padding: 16px;
+    text-align: center;
+    background: #ffffff !important; /* White background */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: box-shadow 0.3s ease-in-out; /* Smooth hover effect */
     padding: 16px;
     text-align: center;
   }
@@ -39,9 +44,21 @@
   } */
   
   .history-card {
-    padding: 16px;
-  }
+     padding-left: 20px;
+     background: #ffffff !important; /* White background */
+     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+     transition: box-shadow 0.3s ease-in-out; /* Smooth hover effect */
+     max-height: 300px; /* Adjust height as needed */
+     overflow-y: auto;
+   }
+    
+
   
+    .welcome-text{
+      margin-top: 2px;
+      margin-bottom: 9px;
+    }
+
   mat-list-item {
     display: flex;
     justify-content: space-between;
@@ -92,9 +109,26 @@
     font-size: 20px;
   }
 
+  .welcome-card {
+    background: #ffffff !important; /* White background */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: box-shadow 0.3s ease-in-out; /* Smooth hover effect */
+    padding: 25px;
+  }
+
+  .details{
+    margin-top: 7px;
+    margin-bottom: 7px;
+    margin-right: 7px;
+    margin-left: 0px;
+  }
+
+  
+
   .scan-button {
+    align-self: center;
     margin: 20px 0;
-    width: 100%;
+    width: 50%;
     font-size: 16px;
   }
   

@@ -1,5 +1,5 @@
 <!-- Sidebar (Stays Fixed) -->
-<div *ngIf="!isPublicPage()" id="sidebar" class="sidebar">
+<div *ngIf="!isPublicPage() && !isAdminDashboard()" id="sidebar" class="sidebar">
   <!-- Close Button -->
   <span class="close-btn" (click)="closeSidebar()">✖</span>
 
@@ -7,6 +7,18 @@
     <li><i class="material-icons">dashboard</i><a href="/user-dashboard">Dashboard</a></li>
     <li><i class="material-icons">restaurant</i><a href="#">Meal Plans</a></li>
     <li><i class="material-icons">history</i><a href="#">QR History</a></li>
+  </ul>
+</div>
+
+
+<div *ngIf="!isPublicPage() && isAdminDashboard()" id="sidebar" class="sidebar">
+  <!-- Close Button -->
+  <span class="close-btn" (click)="closeSidebar()">✖</span>
+
+  <ul>
+    <li><i class="material-icons">dashboard</i><a href="/user-dashboard">Dashboard</a></li>
+    <li><i class="material-icons">restaurant</i><a href="#">Meal Requests</a></li>
+    <li><i class="material-icons">history</i><a href="#">Settings</a></li>
   </ul>
 </div>
 

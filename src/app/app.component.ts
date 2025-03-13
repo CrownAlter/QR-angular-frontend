@@ -48,4 +48,8 @@ export class AppComponent {
   isPublicPage(): boolean {
     return this.router.url === '/login' || this.router.url === '/register';
   }
+
+  isAdminDashboard(): boolean {
+    return this.router.url.startsWith('/admin-dashboard');
+  }
 }

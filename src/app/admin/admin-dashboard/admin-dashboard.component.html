@@ -1,11 +1,9 @@
 <div class="container">
     <!-- Welcome Card -->
     <mat-card class="welcome-card">
-      <img src="../../../assets/user-placeholder.png" alt="User Image" class="user-image" />
-      <h2>Welcome Back, {{ userDetails?.username }}!</h2>
-      <p><strong>Matric Number:</strong> {{ userDetails?.matricNumber }}</p>
-      <p><strong>Meal Plan:</strong></p>
-      <p><strong>Valid Until:</strong></p>
+      <h2 class="welcome-text">Welcome Back, {{ userDetails?.username }}!</h2>
+      <p class="details"><strong>Worker's ID:</strong> {{ userDetails?.matricNumber }}</p>
+      <p class="details"><strong>Date of Onboarding: </strong></p>
     </mat-card>
   
    
@@ -13,11 +11,11 @@
     <!-- Grid Layout -->
     <div class="stats-grid">
       <mat-card class="stat-card">
-        <h3>Meals This Month</h3>
+        <h3>Number of Meal Requests</h3>
         <p class="number"></p>
       </mat-card>
       <mat-card class="stat-card">
-        <h3>Usage Trend</h3>
+        <h3>Active Users</h3>
         <p class="trend"></p>
       </mat-card>
     </div>
@@ -32,7 +30,7 @@
   
     <!-- QR Code History -->
     <mat-card class="history-card">
-      <h3>QR Code History</h3>
+      <h3>Recent Meal Requests</h3>
       <mat-list>
         <mat-list-item *ngFor="let qr of qrHistory">
           <div class="list-content">
