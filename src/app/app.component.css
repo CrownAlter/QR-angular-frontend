@@ -126,8 +126,8 @@
   /* 🛑 Ensure Sidebar Doesn't Move Menu Button */
   .menu-btn {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 17px;
+    left: 10px;
     font-size: 24px;
     background: none;
     border: none;
