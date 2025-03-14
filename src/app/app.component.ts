@@ -46,7 +46,7 @@ export class AppComponent {
 
   // ✅ Check if the current route is a "public" page (e.g., login or register)
   isPublicPage(): boolean {
-    return this.router.url === '/login' || this.router.url === '/register';
+    return this.router.url === '/login' || this.router.url === '/register' || this.router.url === '/landing' ;
   }
 
   isAdminDashboard(): boolean {
