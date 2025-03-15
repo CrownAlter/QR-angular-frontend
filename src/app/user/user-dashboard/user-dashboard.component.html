@@ -53,17 +53,19 @@
   <h3 class="meal-history-title">Meal History</h3>
   <div class="history-list">
     <mat-list class="meal-history-list">
-      <mat-list-item *ngFor="let meal of mealHistory">
+      <mat-list-item *ngFor="let meal of getLatestMealHistory()">
         <div class="list-content">
           <p class="qr-title">{{ meal.mealType | titlecase }}</p>
           <p class="qr-date">Consumed on {{ meal.dateConsumed | date:'medium' }}</p>
         </div>
-        <mat-icon class="download-icon">history</mat-icon>
+        <mat-icon class="history-icon">history</mat-icon>
       </mat-list-item>
     </mat-list>
   </div>
+  <!-- ✅ View More Button -->
+  <button mat-button class="view-more-btn" [routerLink]="'/qr-history'" [queryParams]="{ userId: userDetails?.id }">
+    View More
+  </button>
 </mat-card>
-
-  
-  
+ 
 </div>

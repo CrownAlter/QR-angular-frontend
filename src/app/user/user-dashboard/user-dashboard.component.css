@@ -205,3 +205,11 @@ mat-list {
 .main-content{
   background-color: rgba(249, 250, 251, 1);
 }
+
+.view-more-btn {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  color: #1976d2;
+  font-weight: bold;
+}

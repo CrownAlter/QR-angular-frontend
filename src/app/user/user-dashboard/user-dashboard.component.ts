@@ -41,19 +41,22 @@ export class UserDashboardComponent implements OnInit {
         console.log("User Details:", response);
         this.userDetails = response;
 
-        // ✅ Determine meal plan based on mealId
-        this.mealPlan = this.getMealPlan(this.userDetails?.mealId);
-
+        // ✅ Store userId in localStorage for later use
         if (this.userDetails?.id) {
+          localStorage.setItem('userId', this.userDetails.id.toString());
           this.loadMealHistory(this.userDetails.id);
           this.loadMealStatus();
         }
+
+        // ✅ Determine meal plan based on mealId
+        this.mealPlan = this.getMealPlan(this.userDetails?.mealId);
       },
       error: (err) => {
         console.error("Error fetching user details:", err);
       }
     });
-  }
+}
+
 
   getMealPlan(mealId?: number): string {
     switch (mealId) {
@@ -108,6 +111,11 @@ export class UserDashboardComponent implements OnInit {
       }
     });
   }
+
+  getLatestMealHistory(): any[] {
+    return this.mealHistory.slice(0, 10); // ✅ Show only the latest 10 records
+  }
+  
 
   // ✅ Fetch Meals Left & Meals Used
   loadMealStatus() {

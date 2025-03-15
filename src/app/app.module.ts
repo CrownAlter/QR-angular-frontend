@@ -22,6 +22,7 @@ import { UserDashboardComponent } from './user/user-dashboard/user-dashboard.com
 import { QrScannerComponent } from './admin/qr-scanner/qr-scanner.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 import { LandingPageComponent } from './intro/landing-page/landing-page.component';
+import { QrHistoryComponent } from './user/qr-history/qr-history.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { LandingPageComponent } from './intro/landing-page/landing-page.componen
     QrScannerComponent,
     AdminDashboardComponent,
     LandingPageComponent,
+    QrHistoryComponent,
   ],
   imports: [
     FormsModule,
