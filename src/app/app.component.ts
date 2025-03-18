@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from './user/user.service';
 
 @Component({
   selector: 'app-root',
@@ -42,7 +43,7 @@ export class AppComponent {
     }
   }
 
-  constructor(public router: Router) {}
+  constructor(public router: Router, private userService: UserService) {}
 
   // ✅ Check if the current route is a "public" page (e.g., login or register)
   isPublicPage(): boolean {
@@ -51,5 +52,9 @@ export class AppComponent {
 
   isAdminDashboard(): boolean {
     return this.router.url.startsWith('/admin-dashboard');
+  }
+
+  logout() {
+    this.userService.logout(); // ✅ Call logout method from UserService
   }
 }

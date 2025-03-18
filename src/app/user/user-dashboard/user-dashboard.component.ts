@@ -3,6 +3,7 @@ import { UserService} from '../user.service';
 import { QrGenerationComponent } from '../qr-generation/qr-generation.component';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import * as CryptoJS from 'crypto-js'; 
 
 interface User {
   id: number;
@@ -58,6 +59,8 @@ export class UserDashboardComponent implements OnInit {
 }
 
 
+
+
   getMealPlan(mealId?: number): string {
     switch (mealId) {
       case 1:
@@ -74,21 +77,38 @@ export class UserDashboardComponent implements OnInit {
   }
   
   toggleQRCode() {
-    if (this.userDetails) {
-      const now = new Date(); // Get current local time
-  
-      this.qrData = JSON.stringify({
-        id: this.userDetails.id,
-        username: this.userDetails.username,
-        matricNumber: this.userDetails.matricNumber,
-        mealId: this.userDetails.mealId || 'Not assigned',
-        timestamp: now.toISOString() // Add timestamp in ISO format
-      });
-  
-      this.showQRCode = !this.showQRCode; // Toggle QR display
-    } else {
+    if (!this.userDetails) {
       console.error("No user details available!");
+      return;
     }
+  
+    const secretKey = 'your-encryption-key'; // 🔐 Secure this key
+    const hmacKey = 'your-signing-key'; // 🔐 Secure this key
+    const now = new Date(); // Get current local time
+  
+    // ✅ Step 1: Prepare the raw data
+    const qrData = JSON.stringify({
+      id: this.userDetails.id,
+      username: this.userDetails.username,
+      matricNumber: this.userDetails.matricNumber,
+      mealId: this.userDetails.mealId || 'Not assigned',
+      timestamp: now.toISOString()
+    });
+  
+    // ✅ Step 2: Generate HMAC Signature
+    const hmacSignature = CryptoJS.HmacSHA256(qrData, hmacKey).toString();
+  
+    // ✅ Step 3: Append Signature to Data
+    const signedData = JSON.stringify({ ...JSON.parse(qrData), signature: hmacSignature });
+  
+    // ✅ Step 4: Encrypt the Signed Data
+    const encryptedData = CryptoJS.AES.encrypt(signedData, secretKey).toString();
+  
+    // ✅ Step 5: Use the Encrypted Data as QR Code Content
+    this.qrData = encryptedData;
+  
+    // ✅ Toggle QR Code Display
+    this.showQRCode = !this.showQRCode;
   }
 
   loadMealHistory(userId: number) {

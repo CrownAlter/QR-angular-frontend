@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BarcodeFormat } from '@zxing/library';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-qr-scanner',
@@ -13,6 +14,9 @@ export class QrScannerComponent {
   allowedFormats = [BarcodeFormat.QR_CODE];
   apiUrl = 'http://localhost:8000/api/v1/meal/consume'; // Change to match your API
   isValidating = false;
+  private secretKey = 'your-encryption-key';
+  private hmacKey = 'your-signing-key';
+  private scannedQRs = new Set(); // ✅ Prevent duplicate scans
 
   getMealType(timestamp: string): string {
     const date = new Date(timestamp); // Convert timestamp string to Date object
@@ -33,67 +37,105 @@ export class QrScannerComponent {
       return 'supper';
     } else {
       console.log("Assigned Meal Type: invalid (Outside meal hours)");
-      return 'lunch'; // Outside meal hours
+      return 'invalid'; // Outside meal hours
     }
   }
     
 
   constructor(private http: HttpClient) {}
 
+  /** 🔹 Handles successful QR code scan */
   onScanSuccess(qrText: string) {
     try {
-      this.scannedData = JSON.parse(qrText); // ✅ Convert string to object
-  
+      // ✅ Step 1: Decrypt & Validate the QR Code
+      const decryptedData = this.decryptAndValidateQRCode(qrText);
+      if (!decryptedData) {
+        console.error("Invalid or tampered QR Code!");
+        alert("Invalid or tampered QR Code!");
+        return;
+      }
+
+      this.scannedData = decryptedData; // ✅ Store valid decrypted data
+
+      // ✅ Step 2: Prevent Duplicate Scan
+      if (this.scannedQRs.has(this.scannedData.id)) {
+        alert("QR Code already scanned!");
+        return;
+      }
+      this.scannedQRs.add(this.scannedData.id);
+
+      // ✅ Step 3: Assign Meal Type Based on Time
       if (this.scannedData.timestamp) {
         this.scannedData.mealType = this.getMealType(this.scannedData.timestamp);
-        console.log("Meal Type Assigned:", this.scannedData.mealType); // ✅ Log mealType
       } else {
         console.warn("Timestamp missing in scanned QR code!");
       }
-  
-      console.log("Scanned QR Data Before Sending:", this.scannedData); // ✅ Log full JSON data
-  
-      // Example: Access individual values
-      console.log("ID:", this.scannedData.userId);
-      console.log("Username:", this.scannedData.name);
-      console.log("Matric Number:", this.scannedData.matricNumber);
-      console.log("Meal ID:", this.scannedData.mealId);
-      console.log("Timestamp:", this.scannedData.timestamp);
-      
-      // Now send it to backend
-      this.validateQRCode();
+
+      console.log("Scanned QR Data Before Sending:", this.scannedData);
+      this.validateQRCode(); // ✅ Proceed to validate QR with backend
     } catch (error) {
       console.error("Invalid QR Code format!", error);
       alert("Invalid QR Code. Please try again.");
     }
   }
-  
-  
 
+  /** 🔹 Decrypts and verifies QR code authenticity */
+  decryptAndValidateQRCode(encryptedData: string): any {
+    try {
+      // ✅ Step 1: Decrypt the QR Code Data
+      const bytes = CryptoJS.AES.decrypt(encryptedData, this.secretKey);
+      const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+      if (!decryptedData) throw new Error("Decryption failed");
+
+      const qrData = JSON.parse(decryptedData);
+      console.log("Decrypted QR Data:", qrData);
+
+      // ✅ Step 2: Extract and Verify Signature
+      const receivedSignature = qrData.signature;
+      delete qrData.signature;
+
+      const computedSignature = CryptoJS.HmacSHA256(
+        JSON.stringify(qrData),
+        this.hmacKey
+      ).toString();
+
+      if (computedSignature !== receivedSignature) {
+        console.error("Invalid QR Code: Signature Mismatch!");
+        return null;
+      }
+
+      console.log("QR Code is Valid!");
+      return qrData;
+    } catch (error) {
+      console.error("QR Code Decryption or Verification Failed:", error);
+      return null;
+    }
+  }
+
+
+  /** 🔹 Sends the QR data for validation */
   validateQRCode() {
     if (!this.scannedData) {
       console.error("No scanned QR data available!");
       return;
     }
-  
+
     this.isValidating = true;
-  
     const token = localStorage.getItem('token');
-    console.log("Auth Token:", token); // ✅ Debugging
-  
+    console.log("Auth Token:", token);
+
     if (!token) {
       console.error("No authentication token found!");
       alert("Authentication required. Please log in.");
       this.isValidating = false;
       return;
     }
-  
+
     // ✅ Extract required fields from scanned QR data
     const { matricNumber, username, mealId, id, timestamp } = this.scannedData;
-    const mealType = this.getMealType(timestamp); // Determine meal type
-  
+    const mealType = this.getMealType(timestamp);
     console.log("Meal Type Assigned:", mealType);
-  
+
     // ✅ Prepare x-www-form-urlencoded data
     const body = new HttpParams()
       .set('matricNumber', matricNumber)
@@ -101,15 +143,14 @@ export class QrScannerComponent {
       .set('mealType', mealType)
       .set('mealId', mealId.toString()) // Convert mealId to string
       .set('userId', id.toString()); // Convert userId to string
-  
-    console.log("Final Request Body:", body.toString()); // ✅ Debug request body
-  
-    // ✅ Set headers for x-www-form-urlencoded
+
+    console.log("Final Request Body:", body.toString());
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     });
-  
+
     // ✅ Send the request to the backend
     this.http.post(this.apiUrl, body.toString(), { headers }).subscribe({
       next: (response) => {
@@ -125,6 +166,5 @@ export class QrScannerComponent {
       }
     });
   }
-  
-  
 }
+  

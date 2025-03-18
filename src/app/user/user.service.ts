@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 // import {axios} from "axios";
 
 export interface User {
@@ -21,7 +22,7 @@ export interface User {
 export class UserService {
   private apiUrl = 'http://localhost:8000/api/v1/auth/curr-user'; // Adjust the base URL accordingly
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   loadUserDetails(): Observable<any> {
     const token = localStorage.getItem('token');
@@ -34,5 +35,17 @@ export class UserService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.http.get(this.apiUrl, { headers });
+  }
+
+  logout() {
+    console.log("Logging out user...");
+
+    // ✅ Remove stored user session details
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    sessionStorage.clear(); // If sessionStorage is used
+
+    // ✅ Redirect to login page
+    this.router.navigate(['/login']);
   }
 }
