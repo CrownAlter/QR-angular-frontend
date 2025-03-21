@@ -1,0 +1,20 @@
+<div class="search-container">
+  <h2>Search User by ID</h2>
+  
+  <div class="input-group">
+    <input [(ngModel)]="userId" type="number" placeholder="Enter User ID" />
+    <button (click)="searchUser()" [disabled]="isLoading">Search</button>
+  </div>
+
+  <p *ngIf="isLoading">Searching...</p>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+  <div *ngIf="userDetails" class="user-info">
+    <h3>User Details</h3>
+    <p><strong>ID:</strong> {{ userDetails.id }}</p>
+    <p><strong>Username:</strong> {{ userDetails.username }}</p>
+    <p><strong>Email:</strong> {{ userDetails.email }}</p>
+    <p><strong>Matric Number:</strong> {{ userDetails.matricNumber }}</p>
+    <p><strong>Meal Plan:</strong> {{ userDetails.meal?.name || 'Not assigned' }}</p>
+  </div>
+</div>
