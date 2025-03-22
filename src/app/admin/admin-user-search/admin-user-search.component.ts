@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 
@@ -8,19 +8,55 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
   templateUrl: './admin-user-search.component.html',
   styleUrl: './admin-user-search.component.css'
 })
-export class AdminUserSearchComponent {
-  userId: number | null = null; // Store user ID as a number
-  userDetails: any = null; // Stores retrieved user data
+export class AdminUserSearchComponent implements OnInit{
+  matricNumber: string = ''; // Stores the search input
+  userDetails: any = null; // Stores searched user data
   isLoading = false;
   errorMessage: string = '';
-
-  private apiUrl = 'http://localhost:8000/api/v1/user-meal/get-user-meal-by-id';
+  allUsers: any[] = []; // ✅ Stores all users
+  filteredUsers: any[] = []; // ✅ Stores filtered users
+  private baseUrl = 'http://localhost:8000/api/v1';
 
   constructor(private http: HttpClient) {}
 
+  ngOnInit(): void {
+    this.fetchAllUsers(); // ✅ Load all users on page load
+  }
+
+  /** 🔹 Fetch all users and store them */
+  fetchAllUsers() {
+    this.isLoading = true;
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      this.errorMessage = 'Authentication required. Please log in.';
+      this.isLoading = false;
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    this.http.get(`${this.baseUrl}/users`, { headers }).subscribe({
+      next: (response: any) => {
+        this.allUsers = response;
+        this.filteredUsers = response;
+      },
+      error: (err) => {
+        console.error("Error fetching users:", err);
+        this.errorMessage = err.error?.message || 'Failed to load users.';
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  /** 🔹 Searches a user by matricNumber */
   searchUser() {
-    if (!this.userId || this.userId.toString().trim() === '') {
-      this.errorMessage = 'Please enter a valid user ID.';
+    if (!this.matricNumber.trim()) {
+      this.errorMessage = 'Please enter a valid matric number.';
       return;
     }
 
@@ -28,7 +64,7 @@ export class AdminUserSearchComponent {
     this.errorMessage = '';
     this.userDetails = null;
 
-    const token = localStorage.getItem('token'); // ✅ Get admin authentication token
+    const token = localStorage.getItem('token');
     if (!token) {
       this.errorMessage = 'Authentication required. Please log in.';
       this.isLoading = false;
@@ -40,10 +76,9 @@ export class AdminUserSearchComponent {
       'Content-Type': 'application/x-www-form-urlencoded',
     });
 
-    // ✅ Prepare the user ID as x-www-form-urlencoded data
-    const body = new HttpParams().set('id', this.userId.toString());
+    const body = new HttpParams().set('matricNumber', this.matricNumber);
 
-    this.http.post(this.apiUrl, body.toString(), { headers }).subscribe({
+    this.http.post(`${this.baseUrl}/user-meal/get-user-meal-by-mat-no`, body.toString(), { headers }).subscribe({
       next: (response) => {
         if (response) {
           this.userDetails = response;
@@ -60,6 +95,17 @@ export class AdminUserSearchComponent {
         this.isLoading = false;
       }
     });
+  }
+
+  /** 🔹 Filters users in the list as admin types in search bar */
+  filterUsers() {
+    if (!this.matricNumber.trim()) {
+      this.filteredUsers = this.allUsers; // Show all users if search is empty
+    } else {
+      this.filteredUsers = this.allUsers.filter(user =>
+        user.matricNumber.includes(this.matricNumber)
+      );
+    }
   }
   
   
