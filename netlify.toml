@@ -1,6 +1,6 @@
 [build]
     base = "qr-angular-frontend"
-    command = "ng build"
+    command = "npm run buiild:prod"
     publish = "dist/browser"
 
     [[redirects]]
