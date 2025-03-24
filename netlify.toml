@@ -1,5 +1,5 @@
 [build]
-    base = "qr-angular-frontend"
+    base = "/*"
     command = "npm run buiild:prod"
     publish = "dist/browser"
 
