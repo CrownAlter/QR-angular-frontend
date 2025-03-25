@@ -38,7 +38,7 @@ export class QrScannerComponent {
       return 'supper';
     } else {
       console.log("Assigned Meal Type: invalid (Outside meal hours)");
-      return 'invalid'; // Outside meal hours
+      return 'lunch'; // Outside meal hours
     }
   }
     
