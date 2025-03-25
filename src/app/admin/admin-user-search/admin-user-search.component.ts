@@ -15,7 +15,7 @@ export class AdminUserSearchComponent implements OnInit{
   errorMessage: string = '';
   allUsers: any[] = []; // ✅ Stores all users
   filteredUsers: any[] = []; // ✅ Stores filtered users
-  private baseUrl = 'https://01d2-105-112-204-173.ngrok-free.app/api/v1';
+  private baseUrl = 'https://8bde-105-112-204-173.ngrok-free.app/api/v1';
 
   constructor(private http: HttpClient) {}
 

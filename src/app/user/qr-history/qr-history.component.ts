@@ -36,7 +36,7 @@ export class QrHistoryComponent {
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const apiUrl = `https://01d2-105-112-204-173.ngrok-free.app/api/v1/meal/history/${userId}`;
+    const apiUrl = `https://8bde-105-112-204-173.ngrok-free.app/api/v1/meal/history/${userId}`;
 
     this.http.get(apiUrl, { headers }).subscribe({
       next: (history: any) => {

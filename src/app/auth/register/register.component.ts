@@ -38,7 +38,7 @@ export class RegisterComponent {
       .set('matricNo', registerData.matricNo);
 
     // Send POST request with the correct headers and form data
-    this.http.post('https://01d2-105-112-204-173.ngrok-free.app/api/v1/auth/register', formData, {
+    this.http.post('https://8bde-105-112-204-173.ngrok-free.app/api/v1/auth/register', formData, {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded'
       })

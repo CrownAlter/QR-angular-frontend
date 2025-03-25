@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8000/api/v1/auth'; // Adjust this to match your backend URL
+  private apiUrl = 'https://8bde-105-112-204-173.ngrok-free.app//api/v1/auth'; // Adjust this to match your backend URL
 
   constructor(private http: HttpClient) {}
 
