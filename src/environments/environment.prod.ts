@@ -1,6 +1,6 @@
 // src/environments/environment.prod.ts
 export const environment = {
     production: true,
-    apiUrl: 'https://easy-books-invent.loca.lt'
+    apiUrl: 'https://shaggy-foxes-check.loca.lt'
   };
   
