@@ -12,7 +12,7 @@ import * as CryptoJS from 'crypto-js';
 export class QrScannerComponent {
   scannedData: any = null; // Holds the scanned QR code data
   allowedFormats = [BarcodeFormat.QR_CODE];
-  apiUrl = 'http://localhost:8000/api/v1/meal/consume'; // Change to match your API
+  apiUrl = 'https://01d2-105-112-204-173.ngrok-free.app/api/v1/meal/consume'; // Change to match your API
   isValidating = false;
   private secretKey = 'your-encryption-key';
   private hmacKey = 'your-signing-key';

@@ -20,7 +20,7 @@ export interface User {
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8000/api/v1/auth/curr-user'; // Adjust the base URL accordingly
+  private apiUrl = 'https://01d2-105-112-204-173.ngrok-free.app/api/v1/auth/curr-user'; // Adjust the base URL accordingly
 
   constructor(private http: HttpClient, private router: Router) {}
 
