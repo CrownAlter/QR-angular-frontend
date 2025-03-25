@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://8bde-105-112-204-173.ngrok-free.app//api/v1/auth'; // Adjust this to match your backend URL
-
+  
   constructor(private http: HttpClient) {}
 
   // Get the current authenticated user
@@ -18,7 +18,7 @@ export class AuthService {
       'Authorization': `Bearer ${token}`,
     });
 
-    return this.http.get(`${this.apiUrl}/current-user`, { headers });
+    return this.http.get(`${environment.apiUrl}/current-user`, { headers });
   }
 
   registerUser(userData: any) {
@@ -27,6 +27,6 @@ export class AuthService {
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
 
-    return this.http.post(this.apiUrl + '/register', formData.toString(), { headers });
+    return this.http.post(`${environment.apiUrl}/register`, formData.toString(), { headers });
   }
 }

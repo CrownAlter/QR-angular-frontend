@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-qr-history',
@@ -36,7 +37,7 @@ export class QrHistoryComponent {
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const apiUrl = `https://8bde-105-112-204-173.ngrok-free.app/api/v1/meal/history/${userId}`;
+    const apiUrl = `${environment.apiUrl}/api/v1/meal/history/${userId}`;
 
     this.http.get(apiUrl, { headers }).subscribe({
       next: (history: any) => {

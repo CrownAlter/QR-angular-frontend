@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,7 @@ export class LoginComponent {
       .set('password', loginData.password);
   
     // Send POST request
-    this.http.post('https://8bde-105-112-204-173.ngrok-free.app/api/v1/auth/login', formData, {
+    this.http.post(`${environment.apiUrl}/api/v1/auth/login`, formData, {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded'
       })
@@ -67,7 +68,6 @@ export class LoginComponent {
         this.loginError = err.error?.message || 'Invalid credentials!';
       }
     });
-  }
-  
+  }  
   
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BarcodeFormat } from '@zxing/library';
 import * as CryptoJS from 'crypto-js';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-qr-scanner',
@@ -12,7 +13,7 @@ import * as CryptoJS from 'crypto-js';
 export class QrScannerComponent {
   scannedData: any = null; // Holds the scanned QR code data
   allowedFormats = [BarcodeFormat.QR_CODE];
-  apiUrl = 'https://8bde-105-112-204-173.ngrok-free.app/api/v1/meal/consume'; // Change to match your API
+  apiUrl = `${environment.apiUrl}/api/v1/meal/consume`; // Change to match your API
   isValidating = false;
   private secretKey = 'your-encryption-key';
   private hmacKey = 'your-signing-key';

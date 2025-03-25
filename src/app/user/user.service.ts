@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment.prod';
 // import {axios} from "axios";
 
 export interface User {
@@ -20,7 +21,7 @@ export interface User {
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'https://8bde-105-112-204-173.ngrok-free.app/api/v1/auth/curr-user'; // Adjust the base URL accordingly
+  private apiUrl = `${environment.apiUrl}/api/v1/auth/curr-user`; // Adjust the base URL accordingly
 
   constructor(private http: HttpClient, private router: Router) {}
 

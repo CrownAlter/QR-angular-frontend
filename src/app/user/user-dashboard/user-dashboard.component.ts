@@ -4,6 +4,7 @@ import { QrGenerationComponent } from '../qr-generation/qr-generation.component'
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as CryptoJS from 'crypto-js'; 
+import { environment } from '../../../environments/environment.prod';
 
 interface User {
   id: number;
@@ -119,7 +120,7 @@ export class UserDashboardComponent implements OnInit {
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const apiUrl = `https://8bde-105-112-204-173.ngrok-free.app/api/v1/meal/history/${userId}`;
+    const apiUrl = `${environment.apiUrl}/api/v1/meal/history/${userId}`;
 
     this.http.get(apiUrl, { headers }).subscribe({
       next: (history: any) => {
@@ -146,7 +147,7 @@ export class UserDashboardComponent implements OnInit {
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const apiUrl = `https://8bde-105-112-204-173.ngrok-free.app/api/v1/user-meal/user-meal-status`;
+    const apiUrl = `${environment.apiUrl}/api/v1/user-meal/user-meal-status`;
 
     this.http.get(apiUrl, { headers }).subscribe({
       next: (mealStatus: any) => {
